@@ -1,0 +1,5 @@
+git status
+git pull origin master
+git gui
+git commit -m "something"
+git push origin [branch]
