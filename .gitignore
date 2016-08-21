@@ -1,8 +1,8 @@
-/Debug/*
-/Release/*
+Debug/
+Release/
 Glorious.VC.db
 Glorious.sln
 .vs/Glorious/v14
 Glorious.VC.VC.opendb
-/Glorious Client/Release/*
-/Glorious Client/Debug/*
+Glorious Client/Release/
+Glorious Client/Debug/
