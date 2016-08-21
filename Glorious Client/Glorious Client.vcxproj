@@ -19,10 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="C_Drawable.cpp" />
     <ClCompile Include="Glorious.cpp" />
+    <ClCompile Include="NetworkManager.cpp" />
     <ClCompile Include="TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ComponentTypes.hpp" />
+    <ClInclude Include="C_Base.hpp" />
+    <ClInclude Include="C_Drawable.hpp" />
+    <ClInclude Include="Instance.hpp" />
+    <ClInclude Include="NetworkManager.hpp" />
     <ClInclude Include="TextureManager.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
