@@ -18,6 +18,21 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="C_Drawable.cpp" />
+    <ClCompile Include="Glorious.cpp" />
+    <ClCompile Include="NetworkManager.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ComponentTypes.hpp" />
+    <ClInclude Include="C_Base.hpp" />
+    <ClInclude Include="C_Drawable.hpp" />
+    <ClInclude Include="Instance.hpp" />
+    <ClInclude Include="NetworkManager.hpp" />
+    <ClInclude Include="Player.hpp" />
+    <ClInclude Include="TextureManager.hpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{EEDCD5CC-DB44-435F-BD3C-6E3B5092A787}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -151,9 +166,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

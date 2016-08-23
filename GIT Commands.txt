@@ -1,5 +1,5 @@
-git status
-git pull origin master
-git gui
-git commit -m "something"
-git push origin [branch]
+git status                  - Check Status
+git pull origin master      - Pull latest code from server
+git gui                     - Add new changes   highlight all, press ctrl-T
+git commit -m "something"   - Commit changes
+git push origin [branch]    - Push changes to server
