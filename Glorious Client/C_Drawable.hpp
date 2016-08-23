@@ -7,14 +7,17 @@
 class C_Drawable : public C_Base, public sf::Sprite
 {
 private:
-	int width, height;
+	sf::Vector2u size;
 	int textureXPosition, textureYPosition;
 	int animationIndex;
+	int animationLength;
 	float imageIndex;
 	float imageSpeed;
 public:
-	C_Drawable(std::string texturePath);
-	C_Drawable(std::string texturePath, int width, int height);
+	C_Drawable(std::string texturePath, int width = 0, int height = 0, int animationLength = 0);
 
-	virtual void draw(std::shared_ptr<sf::RenderWindow> window, float deltaTime);
+	bool setAnimation(int animationIndex);
+
+	virtual void draw(sf::RenderWindow * window, sf::Clock* clock);
+	void ReadIn(std::stringstream* stream);
 };

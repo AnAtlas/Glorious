@@ -11,7 +11,7 @@ public:
 
 	friend std::stringstream& operator >> (
 		std::stringstream& stream, C_Base& b) {
-		b.ReadIn(stream);
+		b.ReadIn(&stream);
 		return stream;
 	}
 

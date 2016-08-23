@@ -30,6 +30,7 @@
     <ClInclude Include="C_Drawable.hpp" />
     <ClInclude Include="Instance.hpp" />
     <ClInclude Include="NetworkManager.hpp" />
+    <ClInclude Include="Player.hpp" />
     <ClInclude Include="TextureManager.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

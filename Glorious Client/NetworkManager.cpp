@@ -2,7 +2,8 @@
 #include <fstream>
 
 #include "NetworkManager.hpp"
-#include "Instance"
+#include "Instance.hpp"
+
 namespace NetworkManager {
 	
 	std::string ipAddress;
@@ -47,7 +48,7 @@ namespace NetworkManager {
 					incomingPacket >> identifier;
 					if (identifier != -1) {
 						//A local instance is expecting data back from server
-						instanceMap[identifier]->packetBack(incomingPacket);
+						instanceMap[identifier]->packetBack(&incomingPacket);
 					}
 					else {
 						//Generic message from server, handle accordingly
