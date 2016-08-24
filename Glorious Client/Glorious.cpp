@@ -21,12 +21,12 @@ void loadTexture() {
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(320, 480), "SFML Works");
-	window.setFramerateLimit(240);
+	window.setFramerateLimit(60);
 	std::shared_ptr<EventManager> eventManager(new EventManager());
 	std::thread eventThread(&EventManager::eventThread, eventManager);
 
 	Player * player = new Player(eventManager);
-	std::shared_ptr<C_Drawable> drawable(new C_Drawable("pic.png", 32, 48));
+	std::shared_ptr<C_Drawable> drawable(new C_Drawable("pic.png", 48, 48));
 	player->addComponent(drawable);
 	fpsFont.loadFromFile("Vegur-Regular.otf");
 	fpsText.setFont(fpsFont);

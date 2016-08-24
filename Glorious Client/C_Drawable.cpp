@@ -3,7 +3,8 @@
 #include <SFML/System.hpp>
 
 C_Drawable::C_Drawable(std::string texturePath, int width, int height, int animationLength) : C_Base(Component::Drawable), 
-		size(width, height), imageSpeed(0), animationLength(animationLength), moving(false), speed(96), tileX(0), tileY(1) {
+		size(width, height), imageSpeed(0), animationLength(animationLength), moving(false), speed(96), tileX(0), tileY(1),
+		counter(0){
 	setTexture(*TextureManager::loadTexture(texturePath));
 	if (size.x == 0 || size.y == 0) {
 		this->size = getTexture()->getSize();
@@ -29,6 +30,15 @@ bool C_Drawable::setAnimation(int animationIndex) {
 }
 
 void C_Drawable::update(sf::Clock* clock) {
+	if (!moving) {
+		counter++;
+		if (counter > 5) {
+			imageIndex = 0;
+			imageSpeed = 0;
+			counter = 0;
+		}
+			
+	}
 	if (moving) {
 		switch (direction) {
 		case DirectionType::Left:
@@ -59,9 +69,6 @@ void C_Drawable::update(sf::Clock* clock) {
 				moving = false;
 			}
 			break;
-		}
-		if (!moving) {
-			imageSpeed = 0;
 		}
 	}
 }
@@ -115,7 +122,8 @@ void C_Drawable::notify(std::shared_ptr<Event> event) {
 				break;
 			}
 			moving = true;
-			imageSpeed = speed / 16;
+			counter = 0;
+			imageSpeed = speed / 8;
 		}
 	}
 }

@@ -18,6 +18,7 @@ private:
 	bool moving;
 	float speed;
 	int tileX, tileY;
+	int counter;
 public:
 	C_Drawable(std::string texturePath, int width = 0, int height = 0, int animationLength = 0);
 
