@@ -22,14 +22,20 @@
     <ClCompile Include="C_Drawable.cpp" />
     <ClCompile Include="Glorious.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ComponentTypes.hpp" />
     <ClInclude Include="C_Base.hpp" />
     <ClInclude Include="C_Drawable.hpp" />
+    <ClInclude Include="C_Updateable.hpp" />
+    <ClInclude Include="Directions.hpp" />
+    <ClInclude Include="EventDefinitions.hpp" />
+    <ClInclude Include="EventManager.hpp" />
     <ClInclude Include="Instance.hpp" />
     <ClInclude Include="NetworkManager.hpp" />
+    <ClInclude Include="Observer.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="TextureManager.hpp" />
   </ItemGroup>
