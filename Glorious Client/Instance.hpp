@@ -11,15 +11,24 @@ class C_Base;
 class Instance : public std::enable_shared_from_this <Instance>
 {
 protected:
-	int id;
+	int instanceId;
 	int typeId;
 	bool persistant;
+	std::shared_ptr<EventManager> eventManager;
 	std::map<Component, std::shared_ptr<C_Base>> components;
 public:
-	Instance() { instanceAmount++; this->id = instanceAmount; typeId = -1; persistant = false; }
-	int getId() { return id; }
+	Instance(std::shared_ptr<EventManager> eventManager) { 
+		instanceAmount++; 
+		this->instanceId = instanceAmount; 
+		this->eventManager = eventManager;
+		typeId = -1; 
+		persistant = false; 
+	}
+	int getId() { return instanceId; }
 	int getTypeId() { return typeId; }
-	void addComponent(std::shared_ptr<C_Base> component) { components[component->getType()] = component; }
+	virtual void update() {};
+	void addComponent(std::shared_ptr<C_Base> component) { components[component->getType()] = component; component->setOwner(instanceId); component->setEventManager(eventManager); component->setEventBindings(); }
 	std::shared_ptr<C_Base> getComponent(Component component) { return components.find(component)->second; }
 	virtual void packetBack(sf::Packet* packet) = 0;
+	
 };
