@@ -8,7 +8,7 @@
 class EventManager {
 private:
 	std::queue<std::shared_ptr<Event>> queuedEvents;
-	std::map<EntityEvent, std::map<int, std::shared_ptr<Observer >> > boundEvents;
+	std::map<EntityEvent, std::map<int, std::vector<std::shared_ptr<Observer >>> > boundEvents;
 	bool shutdown;
 public:
 	EventManager() : shutdown(false) {}
@@ -16,11 +16,11 @@ public:
 
 	void queueEvent(std::shared_ptr<Event> event) { queuedEvents.push(event); };
 	void bindEvent(EntityEvent eventType, int parentInstance, std::shared_ptr<Observer> observer) {
-		boundEvents[eventType][parentInstance] = observer;
+		boundEvents[eventType][parentInstance].push_back(observer);
 	}
 	void unbindEvent(EntityEvent eventType, int parentInstance) {
+		boundEvents[eventType][parentInstance].clear();
 		boundEvents[eventType].erase(parentInstance);
-		boundEvents.erase(eventType);
 	}
 
 	void stopThread() {
@@ -34,7 +34,10 @@ public:
 				queuedEvents.pop();
 				int parent = 0;
 				event->getEvent() >> parent;
-				boundEvents[event->getType()][parent]->notify(event);
+				std::vector<std::shared_ptr<Observer>>* observers = &boundEvents[event->getType()][parent];
+				for (auto itr = observers->begin(); itr != observers->end(); itr++) {
+					itr->get()->notify(event);
+				}
 			}
 			else {
 				sf::sleep(sf::milliseconds(25));
