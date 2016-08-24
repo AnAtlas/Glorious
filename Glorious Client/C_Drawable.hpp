@@ -21,7 +21,7 @@ private:
 	int counter;
 public:
 	C_Drawable(std::string texturePath, int width = 0, int height = 0, int animationLength = 0);
-
+	~C_Drawable() {}
 	bool setAnimation(int animationIndex);
 	DirectionType getDirection();
 	bool isMoving();
