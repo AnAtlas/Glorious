@@ -3,8 +3,8 @@
 #include <SFML/System.hpp>
 
 C_Drawable::C_Drawable(std::string texturePath, int width, int height, int animationLength) : C_Base(Component::Drawable), 
-		size(width, height), imageSpeed(0), animationLength(animationLength), moving(false), speed(96), tileX(0), tileY(1),
-		counter(0){
+		size(width, height), imageSpeed(0), animationLength(animationLength), moving(false), speed(128), tileX(0), tileY(1),
+		counter(0), realX(0), realY(32), roundX(0), roundY(32){
 	setTexture(*TextureManager::loadTexture(texturePath));
 	if (size.x == 0 || size.y == 0) {
 		this->size = getTexture()->getSize();
@@ -12,7 +12,7 @@ C_Drawable::C_Drawable(std::string texturePath, int width, int height, int anima
 	if (this->animationLength == 0) {
 		this->animationLength = getTexture()->getSize().x / size.x;
 	}
-	setOrigin(0, size.y - 16);
+	setOrigin(8, size.y - 16);
 	setPosition(tileX * 32, tileY * 32);
 }
 
@@ -30,9 +30,10 @@ bool C_Drawable::setAnimation(int animationIndex) {
 }
 
 void C_Drawable::update(sf::Clock* clock) {
+	mutex.lock();
 	if (!moving) {
 		counter++;
-		if (counter > 5) {
+		if (counter > .25 / clock->getElapsedTime().asSeconds()) {
 			imageIndex = 0;
 			imageSpeed = 0;
 			counter = 0;
@@ -42,9 +43,13 @@ void C_Drawable::update(sf::Clock* clock) {
 	if (moving) {
 		switch (direction) {
 		case DirectionType::Left:
-			setPosition(getPosition().x - speed * clock->getElapsedTime().asSeconds() , getPosition().y);
-			if (getPosition().x <= tileX * 32) {
-				setPosition(tileX * 32, tileY * 32);
+			realX = realX - speed * clock->getElapsedTime().asSeconds();
+			roundX = std::round(realX);
+			setPosition(roundX , roundY); 
+			
+			if (realX <= tileX * 32) {
+				realX = tileX * 32;
+				setPosition(realX, tileY * 32);
 				moving = false;
 			}
 			break;
@@ -71,6 +76,7 @@ void C_Drawable::update(sf::Clock* clock) {
 			break;
 		}
 	}
+	mutex.unlock();
 }
 
 bool C_Drawable::isMoving() {
@@ -81,11 +87,13 @@ DirectionType C_Drawable::getDirection() {
 }
 
 void C_Drawable::draw(sf::RenderWindow* window, sf::Clock * clock) {
+	mutex.lock();
 	imageIndex += imageSpeed * (clock->getElapsedTime().asSeconds());
 	if (imageIndex >= animationLength)
 		imageIndex = 0;
 	this->setTextureRect(sf::IntRect((int)std::floor(imageIndex) * size.x, animationIndex * size.y, size.x, size.y));
 	window->draw(*this);
+	mutex.unlock();
 }
 
 void C_Drawable::ReadIn(std::stringstream* stream) {
@@ -123,7 +131,7 @@ void C_Drawable::notify(std::shared_ptr<Event> event) {
 			}
 			moving = true;
 			counter = 0;
-			imageSpeed = speed / 8;
+			imageSpeed = speed / 16;
 		}
 	}
 }

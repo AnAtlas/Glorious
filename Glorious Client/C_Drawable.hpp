@@ -19,6 +19,9 @@ private:
 	float speed;
 	int tileX, tileY;
 	int counter;
+	sf::Mutex mutex;
+	float realX, realY;
+	int roundX, roundY;
 public:
 	C_Drawable(std::string texturePath, int width = 0, int height = 0, int animationLength = 0);
 	~C_Drawable() {}

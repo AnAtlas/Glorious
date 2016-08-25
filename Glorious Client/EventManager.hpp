@@ -4,6 +4,7 @@
 #include <functional>
 #include "EventDefinitions.hpp"
 #include "Observer.hpp"
+#include <SFML/Graphics.hpp>
 
 class EventManager {
 private:

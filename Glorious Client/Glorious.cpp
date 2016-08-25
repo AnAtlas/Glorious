@@ -13,34 +13,58 @@ enum GameState {
 
 int gameState = GS_LOGIN;
 sf::Clock fpsClock;
-sf::Text fpsText;
-sf::Font fpsFont;
+sf::Clock updateClock;
+Player* player;
 float fps;
+void renderFunction(std::shared_ptr<sf::RenderWindow> window);
 
 int main() {
-	sf::RenderWindow window(sf::VideoMode(320, 480), "SFML Works");
-	window.setFramerateLimit(144);
+	std::shared_ptr<sf::RenderWindow> window(new sf::RenderWindow(sf::VideoMode(320, 480), "SFML Works"));
+	//window->setVerticalSyncEnabled(true);
+	window->setActive(false);
+
 	std::shared_ptr<EventManager> eventManager(new EventManager());
 	std::thread eventThread(&EventManager::eventThread, eventManager);
 
-	Player * player = new Player(eventManager);
-	std::shared_ptr<C_Drawable> drawable(new C_Drawable("pic.png", 48, 48));
-	player->addComponent(drawable);
-	while (window.isOpen()) {
+	player = new Player(eventManager);
+	player->addComponent(std::shared_ptr<C_Drawable>(new C_Drawable("pic.png", 48, 48)));
+
+	std::thread renderThread(&renderFunction, window);
+
+	while (window->isOpen()) {
 		sf::Event event;
-		while (window.pollEvent(event)) {
+		while (window->pollEvent(event)) {
 			if (event.type == sf::Event::Closed)
-				window.close();
+				window->close();
 		}
-		window.clear();
-		player->update(&fpsClock);
-		std::static_pointer_cast<C_Drawable>(player->getComponent(Component::Drawable))->draw(&window,&fpsClock);
-		fpsClock.restart();
-		window.display();
+		player->update(&updateClock);
+		updateClock.restart();
+		sf::sleep(sf::seconds(0.001));
 	}
 	eventManager->stopThread();
-	eventThread.detach();
+	eventThread.join();
+	renderThread.join();
 	TextureManager::unloadAllTextures();
 	sf::sleep(sf::seconds(0.5f));
 	return 0;
+}
+
+void renderFunction(std::shared_ptr<sf::RenderWindow> window)
+{
+	sf::Text fpsText;
+	sf::Font fpsFont;
+	if (fpsFont.loadFromFile("Vegur-Regular.otf"))
+		fpsText.setFont(fpsFont);
+	fpsText.setFillColor(sf::Color::White);
+	fpsText.setPosition(50, 50);
+	while (window->isOpen())
+	{
+		window->clear();
+		std::static_pointer_cast<C_Drawable>(player->getComponent(Component::Drawable))->draw(window.get(), &fpsClock);
+		window->draw(fpsText);
+		window->display();
+		fpsText.setString(std::to_string(1 / fpsClock.getElapsedTime().asSeconds()));
+		fpsClock.restart();
+		sf::sleep(sf::seconds(0.001f));
+	}
 }
